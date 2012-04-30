@@ -1,0 +1,56 @@
+1. Create an empty 'build_debug' folder inside the source tree of cppdb
+
+2. In the 'Visual Studio Command Prompt (2010)' navigate to the build folder which we created in the last step:
+cd \path\to\cppdb\source\build_debug
+
+3. Issue the cmake command with these parameters for debug build:
+cmake -G "Visual Studio 10" -DCMAKE_LIBRARY_PATH=\path\to\static\sqlite3\debug\build -DCMAKE_INCLUDE_PATH=\path\to\sqlite3\headers -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
+
+4. Again create an empty 'build_release' folder inside the source tree of cppdb
+
+5. In the 'Visual Studio Command Prompt (2010)' navigate to the build folder which we created in the last step:
+cd \path\to\cppdb\source\build_release
+
+6. Issue the cmake command with these parameters for release build:
+cmake -G "Visual Studio 10" -DCMAKE_LIBRARY_PATH=\path\to\static\sqlite3\release\build -DCMAKE_INCLUDE_PATH=\path\to\sqlite3\headers -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
+
+7. Now we have cppdb.sln file in both release and debug folders, which we use to build the library.
+
+8. Open the generated solution files for debug and release modes in VC++ 10.
+Note: For release-build you have to select the Release mode manually in its project file.
+
+9. Modify line 30 of 'shared_object.cpp' in cppdb source tree to make it unicode compatible
+return LoadLibrary(name);
+// to
+return LoadLibrary(LPCWSTR(name));
+// or
+return LoadLibraryA(name);
+
+10. Use these settings for debug/release 'cppdb-static' projects:
+Debug:
+	Configuration Properties > General > Target Name > libcppdb_d
+	Configuration Properties > General > Character Set > Use Unicode Character Set
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded Debug (/MTd)
+	Configuration Properties > C/C++ > Code Generation > Struct Member Alignment > 4 Byte (/Zp4)
+	Configuration Properties > C/C++ > Output Files > Program Database File Name > $(OutDir)libcppdb_d.pdb
+Release:
+	Configuration Properties > General > Character Set > Use Unicode Character Set
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded (/MT)
+	Configuration Properties > C/C++ > Code Generation > Struct Member Alignment > 4 Byte (/Zp4)
+
+11. Use these settings for debug/release 'cppdb_sqlite3-static' projects:
+Debug:
+	Configuration Properties > General > Target Name > libcppdb_sqlite3_d
+	Configuration Properties > General > Character Set > Use Unicode Character Set
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded Debug (/MTd)
+	Configuration Properties > C/C++ > Code Generation > Struct Member Alignment > 4 Byte (/Zp4)
+	Configuration Properties > C/C++ > Output Files > Program Database File Name > $(OutDir)libcppdb_sqlite3_d.pdb
+Release:
+	Configuration Properties > General > Character Set > Use Unicode Character Set
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded (/MT)
+	Configuration Properties > C/C++ > Code Generation > Struct Member Alignment > 4 Byte (/Zp4)
+
+12. Bulid both projects in debug/release mode and grab these files and copy them to our lib folder:
+Debug: libcppdb_d.lib libcppdb_d.pdb libcppdb_sqlite3_d.lib libcppdb_sqlite3_d.pdb
+Release: libcppdb.lib libcppdb_sqlite3.lib
+

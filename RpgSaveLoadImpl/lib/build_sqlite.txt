@@ -1,0 +1,15 @@
+1.Start a new 'Win32 Console Application' project named 'sqlite3' where the application type will be a static library and uncheck the precompiled headers option.
+
+2. Add sqlite3.c, sqlite3.h and sqlite3ext.h files to the new project.
+
+3. Use these settings for the project in both Debug and Release build mode:
+Debug:
+	Configuration Properties > General > Target Name > $(ProjectName)_d
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded Debug (/MTd)
+Release:
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded (/MT)
+
+4. Bulid sqlite3 project and grab these files and copy them to our lib folder:
+Debug: sqlite3_d.lib
+Release: sqlite3.lib
+

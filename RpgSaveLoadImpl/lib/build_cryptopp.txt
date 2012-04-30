@@ -1,0 +1,15 @@
+1. Open 'cryptest.sln' in VC++ 2010
+
+2. Use these settings for cryptlib project in both Debug and Release build mode:
+Debug:
+	Configuration Properties > General > Target Name > $(ProjectName)_d
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded Debug (/MTd)
+	Configuration Properties > C/C++ > Output Files > Program Database File Name > $(OutDir)$(ProjectName)_d.pdb
+Release:
+	Configuration Properties > C/C++ > Code Generation > Runtime Library > Multi-threaded (/MT)
+	Configuration Properties > C/C++ > Output Files > Program Database File Name > $(OutDir)$(ProjectName).pdb
+
+3. Bulid cryptlib project and grab these files and copy them to our lib folder:
+Debug: cryptlib_d.lib cryptlib_d.pdb
+Release: cryptlib.lib cryptlib_d.pdb
+
